@@ -11,5 +11,4 @@ public class DamGeneratorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DamGeneratorApplication.class, args);
 	}
-
 }
