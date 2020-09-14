@@ -18,5 +18,4 @@ public class DatabaseMetadataService {
 		FMDatabaseMetadata result = databaseMetadataRepository.getDatabaseMetadata();
 		return result;
 	}
-	
 }
