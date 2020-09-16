@@ -18,12 +18,15 @@ public class ClassData {
 	
 	private List<Field> fields;
 	
+	private List<String> compositePks;
+	
+	
 	/*
 	 * private List<Enumeration> enums;
-	 */ 
-	/* private List<Property> properties;
-	
-	 * private List<String> compositePks;
+	 * 
+	 * private List<Property> properties;
+	 * 
+	 * 
 	 * 
 	 * private CompositeKey compositeKey;
 	 * 
@@ -39,4 +42,5 @@ public class ClassData {
 	 * 
 	 * private Controller controller;
 	 */
+	 
 }
