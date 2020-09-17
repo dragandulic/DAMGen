@@ -20,15 +20,17 @@ public class ClassData {
 	
 	private List<String> compositePks;
 	
+	private List<Property> properties;
 	
+	private CompositeKey compositeKey;
 	/*
 	 * private List<Enumeration> enums;
 	 * 
-	 * private List<Property> properties;
 	 * 
 	 * 
 	 * 
-	 * private CompositeKey compositeKey;
+	 * 
+	 * 
 	 * 
 	 * private Property manyToManyProperty;
 	 * 
