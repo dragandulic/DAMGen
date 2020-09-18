@@ -17,6 +17,7 @@ import com.example.DAMGenerator.transformer.model.NewProjectDbConnection;
 import com.example.DAMGenerator.transformer.model.NewProjectInfo;
 
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 @Service
 public class MakeNewProjectService extends Generator{
@@ -30,7 +31,10 @@ public class MakeNewProjectService extends Generator{
 			String newProjectPath = path + File.separator + info.getProjectName().toString();
 			Files.createDirectories(Paths.get(newProjectPath));
 			makePackages(newProjectPath);
+			String basepath = generateApplicationMainClass(newProjectPath, info);
+			basePath.append(basepath);
 			makePomFile(info, newProjectPath);
+			createYamlFile(newProjectPath, connection, info.getBasePackageName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,6 +67,59 @@ public class MakeNewProjectService extends Generator{
 			out.flush();
 		} catch (Exception e) {
 			// TODO: handle exception
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	private String generateApplicationMainClass(final String newProjectPath, final NewProjectInfo newProjectInfo) {
+		Template template = getTemplate(TemplateType.APPLICATION);
+		Writer out = null;
+		Map<String, Object> context = new HashMap<String, Object>();
+		String mainPackagePath = newProjectPath + "\\src\\main\\java\\"
+				+ newProjectInfo.getBasePackageName().replace(".", "\\");
+		File outputFile = new File(mainPackagePath + File.separator + "Application.java");
+		System.out.println(mainPackagePath);
+		outputFile.getParentFile().mkdirs();
+		try {
+			out = new OutputStreamWriter(new FileOutputStream(outputFile));
+			context.clear();
+			context.put("project", newProjectInfo);
+			template.process(context, out);
+			out.flush();
+		} catch (TemplateException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return mainPackagePath;
+	}
+	private void createYamlFile(String path, NewProjectDbConnection connection, String basePackageName) {
+		Template template = getTemplate(TemplateType.YAML);
+		Writer out = null;
+		Map<String, Object> context = new HashMap<String, Object>();
+		File outputFile = new File(path + "\\src\\main\\resources" + File.separator + "application.yml");
+		outputFile.getParentFile().mkdirs();
+		try {
+			out = new OutputStreamWriter(new FileOutputStream(outputFile));
+			context.clear();
+			context.put("database", connection);
+			context.put("package", basePackageName);
+			template.process(context, out);
+			out.flush();
+		} catch (TemplateException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
 		} finally {
 			try {
 				out.close();
