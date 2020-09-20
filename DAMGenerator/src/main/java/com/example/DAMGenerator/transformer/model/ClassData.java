@@ -30,15 +30,16 @@ public class ClassData {
 	@Builder.Default 
 	private Boolean generateRepository = true;
 	
+	private Service service;
+
+	private Relationship relationship;
+	
 	  //private List<Enumeration> enums;
 	  
 	  //private Property manyToManyProperty;
 	  
 	  //private Relationship relationship;
-	  
-
-	  
-	 // private Service service;
+	 
 	  
 	  //private Controller controller;
 	 

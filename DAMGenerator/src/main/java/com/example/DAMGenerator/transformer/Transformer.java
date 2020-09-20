@@ -18,6 +18,9 @@ import com.example.DAMGenerator.transformer.model.MakeNewProject;
 import com.example.DAMGenerator.transformer.model.NewProjectDbConnection;
 import com.example.DAMGenerator.transformer.model.NewProjectInfo;
 import com.example.DAMGenerator.transformer.model.Property;
+import com.example.DAMGenerator.transformer.model.Relationship;
+import com.example.DAMGenerator.transformer.model.Service;
+import com.example.DAMGenerator.transformer.model.ServiceOperations;
 import com.example.DAMGenerator.transformer.model.enumeration.Visibility;
 
 @Component
@@ -63,12 +66,18 @@ public class Transformer {
 	}
 	
 	public ClassData processClass(FMTable table) {
+		Relationship rs = Relationship.builder().isRelationshipClass(false).build();
 		
 		ClassData classData = ClassData.builder()
 				.tableName(table.getTableName())
 				.className(ClassNameHelper.toClassName(table.getTableName()))
 				.compositePks(new ArrayList<>())
+				.relationship(rs)
 				.build();
+		
+		ServiceOperations serviceOperations = ServiceOperations.builder().build();
+		Service serv = Service.builder().serviceOperations(serviceOperations).build();
+		classData.setService(serv);
 		
 		processField(classData, table.getTableColumns());
 		processForeignKeys(classData, table.getTableColumns());
