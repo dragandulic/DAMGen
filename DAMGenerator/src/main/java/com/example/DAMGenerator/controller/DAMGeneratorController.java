@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.DAMGenerator.database.model.FMDatabaseMetadata;
 import com.example.DAMGenerator.database.service.DatabaseMetadataService;
+import com.example.DAMGenerator.generator.service.GeneratorService;
 import com.example.DAMGenerator.generator.service.MakeNewProjectService;
 import com.example.DAMGenerator.transformer.Transformer;
 import com.example.DAMGenerator.transformer.model.MakeClasses;
@@ -29,6 +30,9 @@ public class DAMGeneratorController {
 	
 	@Autowired
 	public MakeNewProjectService makeNewProjectService;
+	
+	@Autowired
+	public GeneratorService generatorService;
 	
 	
 	@GetMapping("/metadata")
@@ -67,6 +71,36 @@ public class DAMGeneratorController {
 		
 		String resultPath = makeNewProjectService.makeProjectStructure(makeNewProject.getNewProjectInfo(), makeNewProject.getDatabaseConnection(), path);
 	
+		generatorService.generate(makeNewProject, resultPath);
+		
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

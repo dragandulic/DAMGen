@@ -23,26 +23,24 @@ public class ClassData {
 	private List<Property> properties;
 	
 	private CompositeKey compositeKey;
-	/*
-	 * private List<Enumeration> enums;
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * private Property manyToManyProperty;
-	 * 
-	 * private Relationship relationship;
-	 * 
-	 * @Builder.Default private Boolean generateClass = true;
-	 * 
-	 * @Builder.Default private Boolean generateRepository = true;
-	 * 
-	 * private Service service;
-	 * 
-	 * private Controller controller;
-	 */
+	
+	@Builder.Default 
+	private Boolean generateClass = true;
+	  
+	@Builder.Default 
+	private Boolean generateRepository = true;
+	
+	  //private List<Enumeration> enums;
+	  
+	  //private Property manyToManyProperty;
+	  
+	  //private Relationship relationship;
+	  
+
+	  
+	 // private Service service;
+	  
+	  //private Controller controller;
+	 
 	 
 }

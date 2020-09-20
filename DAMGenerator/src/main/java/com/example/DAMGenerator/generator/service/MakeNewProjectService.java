@@ -31,9 +31,10 @@ public class MakeNewProjectService extends Generator{
 			String newProjectPath = path + File.separator + info.getProjectName().toString();
 			Files.createDirectories(Paths.get(newProjectPath));
 			makePackages(newProjectPath);
+			makePomFile(info, newProjectPath);
 			String basepath = generateApplicationMainClass(newProjectPath, info);
 			basePath.append(basepath);
-			makePomFile(info, newProjectPath);
+			
 			createYamlFile(newProjectPath, connection, info.getBasePackageName());
 		} catch (Exception e) {
 			e.printStackTrace();
