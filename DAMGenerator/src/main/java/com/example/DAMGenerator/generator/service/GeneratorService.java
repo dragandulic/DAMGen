@@ -14,10 +14,14 @@ public class GeneratorService {
 	@Autowired
 	public MakeRepositoryService makeRepositoryService;
 	
+	@Autowired
+	public MakeServiceService makeServiceService;
+	
 	public void generate(MakeNewProject makeNewProject, String path) {
 		
 		makeModelService.generateModel(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 		makeRepositoryService.generateRepository(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
+		makeServiceService.generateService(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 	}
 	
 }

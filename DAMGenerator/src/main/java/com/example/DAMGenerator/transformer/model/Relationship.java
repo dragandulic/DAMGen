@@ -9,6 +9,7 @@ public class Relationship {
 
 	@Builder.Default
 	private Boolean isRelationshipClass = false;
-	
-	private String relationship;
+
+	@Builder.Default
+	private String relationship = "";
 }
