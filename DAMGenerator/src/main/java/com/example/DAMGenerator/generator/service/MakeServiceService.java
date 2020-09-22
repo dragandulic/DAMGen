@@ -27,7 +27,7 @@ public class MakeServiceService extends Generator{
 		
 		List<ClassData> classesForGenerate = new ArrayList<>();
 		for (ClassData classData : classDatas) {
-			if(!classData.getRelationship().getIsRelationshipClass())
+			if(classData.getService().getGenerateService() && !classData.getRelationship().getIsRelationshipClass())
 			{
 				classesForGenerate.add(classData);
 			}

@@ -76,6 +76,7 @@ public class MakeRepositoryService extends Generator{
 			for(Field field : classData.getFields())
 				if(field.getIsPrimaryKey()) {
 					idType = field.getType();
+					break;
 				}
 		}else {
 			imports.add(packageName + ".model." + classData.getClassName() + "Id");
