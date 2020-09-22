@@ -34,6 +34,8 @@ public class ClassData {
 
 	private Relationship relationship;
 	
+	private Controller controller;
+	
 	  //private List<Enumeration> enums;
 	  
 	  //private Property manyToManyProperty;
@@ -41,7 +43,7 @@ public class ClassData {
 	  //private Relationship relationship;
 	 
 	  
-	  //private Controller controller;
+	  
 	 
 	 
 }
