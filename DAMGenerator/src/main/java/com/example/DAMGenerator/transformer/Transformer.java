@@ -12,6 +12,8 @@ import com.example.DAMGenerator.database.model.FMTable;
 import com.example.DAMGenerator.transformer.helper.ClassNameHelper;
 import com.example.DAMGenerator.transformer.model.ClassData;
 import com.example.DAMGenerator.transformer.model.CompositeKey;
+import com.example.DAMGenerator.transformer.model.Controller;
+import com.example.DAMGenerator.transformer.model.ControllerOperations;
 import com.example.DAMGenerator.transformer.model.Field;
 import com.example.DAMGenerator.transformer.model.MakeClasses;
 import com.example.DAMGenerator.transformer.model.MakeNewProject;
@@ -75,6 +77,9 @@ public class Transformer {
 				.relationship(rs)
 				.build();
 		
+		ControllerOperations co = ControllerOperations.builder().build();
+		Controller c = Controller.builder().controllerOperations(co).build();
+		classData.setController(c);
 		ServiceOperations serviceOperations = ServiceOperations.builder().build();
 		Service serv = Service.builder().serviceOperations(serviceOperations).build();
 		classData.setService(serv);
