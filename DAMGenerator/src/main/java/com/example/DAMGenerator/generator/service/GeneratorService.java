@@ -18,6 +18,9 @@ public class GeneratorService {
 	public MakeServiceService makeServiceService;
 	
 	@Autowired
+	public MakeControllerService makeControllerService;
+	
+	@Autowired
 	public MakePageService makePageService;
 	
 	public void generate(MakeNewProject makeNewProject, String path) {
@@ -25,6 +28,7 @@ public class GeneratorService {
 		makeModelService.generateModel(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 		makeRepositoryService.generateRepository(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 		makeServiceService.generateService(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
+		makeControllerService.generateController(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 		makePageService.generatePage(path, makeNewProject.getNewProjectInfo().getBasePackageName(), makeNewProject.getClasses());
 	}
 	
