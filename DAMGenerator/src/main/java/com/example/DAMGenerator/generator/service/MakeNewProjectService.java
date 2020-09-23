@@ -48,6 +48,7 @@ public class MakeNewProjectService extends Generator{
 			Files.createDirectories(Paths.get(path + File.separator + "src/main/resources"));
 			Files.createDirectories(Paths.get(path + File.separator + "src/test/java"));
 			Files.createDirectories(Paths.get(path + File.separator + "src/test/resources"));
+			Files.createDirectories(Paths.get(path + File.separator + "src/main/resources/static"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

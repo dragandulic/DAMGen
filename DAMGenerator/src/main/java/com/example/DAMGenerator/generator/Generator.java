@@ -58,6 +58,10 @@ public abstract class Generator {
 			return "application.ftl";
 		case YAML:
 			return "yaml.ftl";
+		case HTML:
+			return "html.ftl";
+		case CRUD: 
+			return "crud.ftl";
 		case NAMING_STRATEGY:
 			return "naming.ftl";
 		default:

@@ -11,5 +11,7 @@ public enum TemplateType {
 	POM,
 	APPLICATION,
 	YAML,
+	HTML,
+	CRUD,
 	NAMING_STRATEGY
 }
