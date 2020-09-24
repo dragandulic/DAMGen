@@ -14,12 +14,12 @@ public class ControllerOperations {
 	private Boolean get = true;
 	
 	@Builder.Default
-	private Boolean post = false;
+	private Boolean post = true;
 	
 	@Builder.Default
-	private Boolean put = false;
+	private Boolean put = true;
 	
 	@Builder.Default
-	private Boolean delete = false;
+	private Boolean delete = true;
 
 }
