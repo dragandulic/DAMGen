@@ -7,7 +7,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +27,7 @@ import freemarker.template.TemplateException;
 public class MakeNewProjectService extends Generator{
 
 	
-	public String makeProjectStructure(NewProjectInfo info, NewProjectDbConnection connection, String path) {
+	public String makeProjectStructure(NewProjectInfo info, NewProjectDbConnection connection, String path, List<OldFile> oldFiles) {
 		
 		StringBuilder basePath = new StringBuilder();
 		
@@ -31,11 +35,11 @@ public class MakeNewProjectService extends Generator{
 			String newProjectPath = path + File.separator + info.getProjectName().toString();
 			Files.createDirectories(Paths.get(newProjectPath));
 			makePackages(newProjectPath);
-			makePomFile(info, newProjectPath);
-			String basepath = generateApplicationMainClass(newProjectPath, info);
+			makePomFile(info, newProjectPath, oldFiles);
+			String basepath = generateApplicationMainClass(newProjectPath, info, oldFiles);
 			basePath.append(basepath);
 			
-			createYamlFile(newProjectPath, connection, info.getBasePackageName());
+			createYamlFile(newProjectPath, connection, info.getBasePackageName(), oldFiles);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,7 +58,7 @@ public class MakeNewProjectService extends Generator{
 		}
 	}
 	
-	private void makePomFile(NewProjectInfo newProjectInfo, String newProjectPath) 
+	private void makePomFile(NewProjectInfo newProjectInfo, String newProjectPath, List<OldFile> oldFiles) 
 	{
 		Template t = getTemplate(TemplateType.POM);
 		Writer out = null;
@@ -67,6 +71,18 @@ public class MakeNewProjectService extends Generator{
 			data.put("project", newProjectInfo);
 			t.process(data, out);
 			out.flush();
+			if(!oldFiles.isEmpty())
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(outputFile.getName())) {
+			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}
+			    }  }
+			}
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -77,7 +93,7 @@ public class MakeNewProjectService extends Generator{
 			}
 		}
 	}
-	private String generateApplicationMainClass(final String newProjectPath, final NewProjectInfo newProjectInfo) {
+	private String generateApplicationMainClass(final String newProjectPath, final NewProjectInfo newProjectInfo, List<OldFile> oldFiles) {
 		Template template = getTemplate(TemplateType.APPLICATION);
 		Writer out = null;
 		Map<String, Object> context = new HashMap<String, Object>();
@@ -92,6 +108,17 @@ public class MakeNewProjectService extends Generator{
 			context.put("project", newProjectInfo);
 			template.process(context, out);
 			out.flush();
+			if(!oldFiles.isEmpty())
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(outputFile.getName())) {
+			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}
+			    }  }
+			}
 		} catch (TemplateException e) {
 			System.out.println(e);
 		} catch (IOException e) {
@@ -105,7 +132,7 @@ public class MakeNewProjectService extends Generator{
 		}
 		return mainPackagePath;
 	}
-	private void createYamlFile(String path, NewProjectDbConnection connection, String basePackageName) {
+	private void createYamlFile(String path, NewProjectDbConnection connection, String basePackageName, List<OldFile> oldFiles) {
 		Template template = getTemplate(TemplateType.YAML);
 		Writer out = null;
 		Map<String, Object> context = new HashMap<String, Object>();
@@ -118,6 +145,16 @@ public class MakeNewProjectService extends Generator{
 			context.put("package", basePackageName);
 			template.process(context, out);
 			out.flush();
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(outputFile.getName())) {
+			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}
+			    }
+			}}
 		} catch (TemplateException e) {
 			System.out.println(e);
 		} catch (IOException e) {
@@ -130,6 +167,5 @@ public class MakeNewProjectService extends Generator{
 			}
 		}
 	}
-	
 	
 }

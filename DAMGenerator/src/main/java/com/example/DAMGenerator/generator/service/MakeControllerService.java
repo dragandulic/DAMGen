@@ -3,6 +3,7 @@ package com.example.DAMGenerator.generator.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MakeControllerService extends Generator{
 	
 	private List<String> imports = new ArrayList<>();
 	
-	public void generateController(String path, String packageName, List<ClassData> classes) {
+	public void generateController(String path, String packageName, List<ClassData> classes, List<OldFile> oldFiles) {
 		
 		List<ClassData> generateControllerClasses = new ArrayList<>();
 		for(ClassData classData : classes) {
@@ -33,11 +34,11 @@ public class MakeControllerService extends Generator{
 		}
 		
 		for(ClassData classData : generateControllerClasses) {
-			generateControllerForClasses(classData, path, packageName);
+			generateControllerForClasses(classData, path, packageName, oldFiles);
 		}
 	}
 	
-	private void generateControllerForClasses(ClassData classData, String path, String packageName) {
+	private void generateControllerForClasses(ClassData classData, String path, String packageName, List<OldFile> oldFiles) {
 		importsForOperations(classData);
 		Field field = getIdColumn(classData, packageName);
 		imports.add(packageName + ".model." + classData.getClassName());
@@ -59,6 +60,19 @@ public class MakeControllerService extends Generator{
 			context.put("imports", imports);
 			template.process(context, out);
 			out.flush();
+			if(!oldFiles.isEmpty())
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(classData.getClassName().concat("Controller")+".java")) {
+			    	File output = new File(path + File.separator + TemplateType.CONTROLLER.toString().toLowerCase()
+							+ File.separator + classData.getClassName().concat("Controller") + ".java");
+			    	String generatedFile = new String(Files.readAllBytes(output.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}	}
+			    }
+			}
 		} catch (TemplateException e) {
 			System.out.println(e);
 		} catch (IOException e) {

@@ -3,6 +3,7 @@ package com.example.DAMGenerator.generator.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MakeServiceService extends Generator{
 
 	private List<String> imports = new ArrayList<>();
 	
-	public void generateService(String path, String packageName, List<ClassData> classDatas) {
+	public void generateService(String path, String packageName, List<ClassData> classDatas, List<OldFile> oldFiles) {
 		
 		List<ClassData> classesForGenerate = new ArrayList<>();
 		for (ClassData classData : classDatas) {
@@ -34,12 +35,12 @@ public class MakeServiceService extends Generator{
 		}
 		
 		for (ClassData classData : classesForGenerate) {
-			generateServiceClass(packageName, path, classData);
+			generateServiceClass(packageName, path, classData, oldFiles);
 		}
 	}
 	
 	
-	private void generateServiceClass(String packageName, String path, ClassData classData) {
+	private void generateServiceClass(String packageName, String path, ClassData classData, List<OldFile> oldFiles) {
 		
 		imports.add(packageName + ".model." + classData.getClassName());
 		imports.add(packageName + ".repository." + classData.getClassName() + "Repository");
@@ -58,6 +59,18 @@ public class MakeServiceService extends Generator{
 			data.put("imports", imports);
 			template.process(data, out);
 			out.flush();
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(classData.getClassName().concat("Service")+".java")) {
+			    	File output = new File(path + File.separator + TemplateType.SERVICE.toString().toLowerCase()
+							+ File.separator + classData.getClassName().concat("Service") + ".java");
+			    	String generatedFile = new String(Files.readAllBytes(output.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}
+			    }}
+			}
 		} catch (TemplateException e) {
 			System.out.println(e);
 		} catch (IOException e) {

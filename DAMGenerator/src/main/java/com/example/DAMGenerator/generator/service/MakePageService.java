@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class MakePageService extends Generator {
 	
 	private List<String> imports = new ArrayList<>();
 	
-	public void generatePage(String path, String packageName, List<ClassData> classes) {
+	public void generatePage(String path, String packageName, List<ClassData> classes, List<OldFile> oldFiles) {
 		
 		Template t = getTemplate(TemplateType.HTML);
 		Writer out = null;
@@ -44,11 +45,11 @@ public class MakePageService extends Generator {
 			e.printStackTrace();
 		}
 		for (ClassData classData : classes) {
-			generatePageForClass(classData, path, packageName);
+			generatePageForClass(classData, path, packageName, oldFiles);
 		}
 	}
 
-	private void generatePageForClass(ClassData classData, String path, String packageName) {
+	private void generatePageForClass(ClassData classData, String path, String packageName, List<OldFile> oldFiles) {
 
 		Template t = getTemplate(TemplateType.CRUD);
 		Writer out = null;
@@ -58,6 +59,17 @@ public class MakePageService extends Generator {
 			context.put("className", classData.getClassName());
 			t.process(context, out);
 			out.flush();
+			{
+			for (OldFile oldFile : oldFiles) {
+			    if (oldFile.getFilename().equals(classData.getClassName()+".html")) {
+			    	File output = new File(path+"resources/static/"+classData.getClassName()+".html");
+			    	String generatedFile = new String(Files.readAllBytes(output.toPath()));
+			    	if(oldFile.getContent().equals(generatedFile))
+			    	{
+			    		oldFile.setFilename("/");
+			    	}
+			    }  }
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

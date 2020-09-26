@@ -6,7 +6,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <h1>${className} page</h1>
+  <h1>Subject page</h1>
 <style> 
 body {
   background-image: url('background.png'); 
@@ -24,7 +24,7 @@ h1{
 
 </style>
 
-<table class = "table table-bordered table-dark" id= ${className}>
+<table class = "table table-bordered table-dark" id= Subject>
 
     
 </table>
@@ -40,13 +40,13 @@ $(document).ready(function() {
       console.log("stigao");
             $.ajax({
                 type: 'GET',
-                url: 'http://localhost:8080/generated/${className?lower_case}',
+                url: 'http://localhost:8080/generated/subject',
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
                     var myObj = JSON.stringify(response);
                     //populate th-s
                     console.log(response[1]);
-                    var table = document.getElementById("${className}");
+                    var table = document.getElementById("Subject");
                     var thead = document.createElement("thead");
                     table.appendChild(thead);
                     var tr = document.createElement("tr");

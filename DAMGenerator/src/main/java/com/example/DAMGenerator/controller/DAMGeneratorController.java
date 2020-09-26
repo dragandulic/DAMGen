@@ -1,5 +1,13 @@
 package com.example.DAMGenerator.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +22,11 @@ import com.example.DAMGenerator.database.model.FMDatabaseMetadata;
 import com.example.DAMGenerator.database.service.DatabaseMetadataService;
 import com.example.DAMGenerator.generator.service.GeneratorService;
 import com.example.DAMGenerator.generator.service.MakeNewProjectService;
+import com.example.DAMGenerator.generator.service.OldFile;
 import com.example.DAMGenerator.transformer.Transformer;
 import com.example.DAMGenerator.transformer.model.MakeClasses;
 import com.example.DAMGenerator.transformer.model.MakeNewProject;
+import com.example.DAMGenerator.transformer.model.NewProjectInfo;
 
 @RestController
 @RequestMapping("/app")
@@ -69,15 +79,160 @@ public class DAMGeneratorController {
 		String path = makeNewProject.getNewProjectInfo().getBasePath().replace("\\\\", "\\");
 		makeNewProject.getNewProjectInfo().setBasePath(path);
 		
-		String resultPath = makeNewProjectService.makeProjectStructure(makeNewProject.getNewProjectInfo(), makeNewProject.getDatabaseConnection(), path);
+		List<OldFile> oldFiles = getAllCurrentFiles(path + File.separator + makeNewProject.getNewProjectInfo().getProjectName().toString(),makeNewProject.getNewProjectInfo());
+		String resultPath = makeNewProjectService.makeProjectStructure(makeNewProject.getNewProjectInfo(), makeNewProject.getDatabaseConnection(), path, oldFiles);
 	
-		generatorService.generate(makeNewProject, resultPath);
+		generatorService.generate(makeNewProject, resultPath, oldFiles);
 		
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	private List<OldFile> getAllCurrentFiles(String projectPath, NewProjectInfo info)
+	{
+		List<OldFile> listFiles = new ArrayList<OldFile>();
+		Path path = Paths.get(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName()+ File.separator +"model");
+		if (Files.notExists(path)) {
+		   return listFiles;
+		}
+		File dirModel = new File(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName()+ File.separator +"model");
+		
+		
+		
+		for (File file : dirModel.listFiles()) {
 
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	                                            }
+		File dirRepository = new File(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName()+ File.separator +"repository");
+		if(dirRepository != null)
+		{
+		for (File file : dirRepository.listFiles()) {
+
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	                                            }
+		}
+		
+		File dirService = new File(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName()+ File.separator +"service");
+		if(dirService != null)
+		{
+		for (File file : dirService.listFiles()) {
+
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	                                            }
+		}
+		
+		File dirController = new File(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName()+ File.separator +"controller");
+		if(dirController != null)
+		{
+		for (File file : dirController.listFiles()) {
+
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	                                            }
+		}
+		
+		File dirPackageName = new File(projectPath + File.separator + "src/main/java"+ File.separator +info.getBasePackageName());
+		if(dirPackageName != null)
+		{
+		for (File file : dirPackageName.listFiles()) {
+			if(!file.isDirectory()) {
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	                                            }
+		}
+		File dirStatic = new File(projectPath + File.separator + "src/main/resources/static");
+		if(dirStatic != null)
+		{
+		for (File file : dirStatic.listFiles()) {
+			if(!file.isDirectory()) {
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	                                            }
+		}
+		
+		File dirResources = new File(projectPath + File.separator + "src/main/resources");
+		if(dirResources != null)
+		{
+		for (File file : dirResources.listFiles()) {
+			if(!file.isDirectory()) {
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	                                            }
+		}
+		File dirProjectPath = new File(projectPath);
+		if(dirProjectPath != null)
+		{
+		for (File file : dirProjectPath.listFiles()) {
+			if(!file.isDirectory()) {
+			try {
+				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
+				
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				listFiles.add(oldfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	                                            }
+		}
+	 return listFiles;
+	}
 
 
 
