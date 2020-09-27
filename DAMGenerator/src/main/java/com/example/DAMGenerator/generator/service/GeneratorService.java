@@ -1,12 +1,6 @@
 package com.example.DAMGenerator.generator.service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,33 +39,25 @@ public class GeneratorService {
 		
 		if(!oldFiles.isEmpty())
 		{
-		new File(makeNewProject.getNewProjectInfo().getBasePath()+File.separator+"ChangedFiles").mkdirs();
-		
-		for(int i=0;i< oldFiles.size();i++)
-		{
-			if(!oldFiles.get(i).getFilename().equals("/"))
+			for(int i=0;i< oldFiles.size();i++)
 			{
-				String fpath = makeNewProject.getNewProjectInfo().getBasePath()+File.separator+"/ChangedFiles"+File.separator+oldFiles.get(i).getFilename();
-				File f = new File(fpath);
-				f.getParentFile().mkdirs(); 
-				try {
-					f.createNewFile();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			
-				try {
-					Path p = Paths.get(fpath);
-					byte[] bytes = oldFiles.get(i).getContent().getBytes();
-					Files.write(p, bytes);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(!oldFiles.get(i).getFilename().equals("/"))
+				{
+					try {
+						Path p = Paths.get(oldFiles.get(i).getPath());
+						byte[] bytes = oldFiles.get(i).getContent().getBytes();
+						Files.write(p, bytes);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
+			
+			
+			
 		}
-		}
+		
 	}
 	
 }

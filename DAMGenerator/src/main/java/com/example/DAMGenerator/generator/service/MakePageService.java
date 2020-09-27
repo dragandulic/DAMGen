@@ -64,9 +64,12 @@ public class MakePageService extends Generator {
 			    if (oldFile.getFilename().equals(classData.getClassName()+".html")) {
 			    	File output = new File(path+"resources/static/"+classData.getClassName()+".html");
 			    	String generatedFile = new String(Files.readAllBytes(output.toPath()));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		output.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(output.toPath(), bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }  }
 			}

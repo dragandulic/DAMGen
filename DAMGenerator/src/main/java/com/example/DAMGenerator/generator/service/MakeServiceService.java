@@ -65,9 +65,12 @@ public class MakeServiceService extends Generator{
 			    	File output = new File(path + File.separator + TemplateType.SERVICE.toString().toLowerCase()
 							+ File.separator + classData.getClassName().concat("Service") + ".java");
 			    	String generatedFile = new String(Files.readAllBytes(output.toPath()));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		output.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(output.toPath(), bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }}
 			}

@@ -76,9 +76,12 @@ public class MakeNewProjectService extends Generator{
 			for (OldFile oldFile : oldFiles) {
 			    if (oldFile.getFilename().equals(outputFile.getName())) {
 			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		outputFile.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(outputFile.toPath(), bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }  }
 			}
@@ -113,9 +116,12 @@ public class MakeNewProjectService extends Generator{
 			for (OldFile oldFile : oldFiles) {
 			    if (oldFile.getFilename().equals(outputFile.getName())) {
 			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		outputFile.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(outputFile.toPath(), bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }  }
 			}
@@ -149,9 +155,12 @@ public class MakeNewProjectService extends Generator{
 			for (OldFile oldFile : oldFiles) {
 			    if (oldFile.getFilename().equals(outputFile.getName())) {
 			    	String generatedFile = new String(Files.readAllBytes(outputFile.toPath()));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		outputFile.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(outputFile.toPath(), bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }
 			}}

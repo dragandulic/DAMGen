@@ -4,11 +4,14 @@ public class OldFile {
 	
 	private String filename;
 	private String content;
+	private String path;
 	
-	public OldFile(String filename, String content) {
+	
+	public OldFile(String filename, String content, String path) {
 		super();
 		this.filename = filename;
 		this.content = content;
+		this.path = path;
 	}
 	
 	public String getFilename() {
@@ -22,6 +25,14 @@ public class OldFile {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	

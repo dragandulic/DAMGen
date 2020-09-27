@@ -103,7 +103,7 @@ public class DAMGeneratorController {
 
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -118,7 +118,7 @@ public class DAMGeneratorController {
 
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -135,7 +135,7 @@ public class DAMGeneratorController {
 
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -152,7 +152,7 @@ public class DAMGeneratorController {
 
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -170,7 +170,7 @@ public class DAMGeneratorController {
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
 				
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -187,7 +187,7 @@ public class DAMGeneratorController {
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
 				
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -205,7 +205,7 @@ public class DAMGeneratorController {
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
 				
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -222,7 +222,7 @@ public class DAMGeneratorController {
 			try {
 				String oldVersionContent = new String(Files.readAllBytes(file.toPath()));
 				
-				OldFile oldfile = new OldFile(file.getName(), oldVersionContent);
+				OldFile oldfile = new OldFile(file.getName(), oldVersionContent, file.getPath());
 				listFiles.add(oldfile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

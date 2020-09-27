@@ -68,9 +68,13 @@ public class MakeModelService extends Generator{
 			    	Path poutput = Paths.get(fileName);
 			    
 			    	String generatedFile = new String(Files.readAllBytes(poutput));
-			    	if(oldFile.getContent().equals(generatedFile))
+			    	if(!oldFile.getContent().equals(generatedFile))
 			    	{
-			    		oldFile.setFilename("/");
+			    		File f = new File(fileName);
+			    		f.delete();
+			    		byte[] bytes = oldFile.getContent().getBytes();
+						Files.write(poutput, bytes);
+						oldFile.setFilename("/");
 			    	}
 			    }
 			}}
