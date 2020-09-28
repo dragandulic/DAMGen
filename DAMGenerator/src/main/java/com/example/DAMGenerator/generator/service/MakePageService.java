@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.DAMGenerator.generator.Generator;
@@ -31,6 +35,7 @@ public class MakePageService extends Generator {
 		Writer out = null;
 		path = path.split("java")[0];
 		generateBackgroundImage(path);
+		generateScriptsAndStylesheets(path);
 		Map<String, Object> context = new HashMap<String, Object>();
 		try {
 			out = getWriter(path+"resources/static/dashboard.html");
@@ -87,10 +92,10 @@ public class MakePageService extends Generator {
 		BufferedImage bImage = null;
         try {
         	ClassLoader classLoader = getClass().getClassLoader();
-            File initialImage = new File(classLoader.getResource("images/background.png").getFile());
+            File initialImage = new File(classLoader.getResource("images/background.jpg").getFile());
             bImage = ImageIO.read(initialImage);
 
-            ImageIO.write(bImage, "png", new File(path+"/resources/static/background.png"));
+            ImageIO.write(bImage, "png", new File(path+"/resources/static/background.jpg"));
             
 
         } catch (IOException e) {
@@ -98,5 +103,71 @@ public class MakePageService extends Generator {
         }
         System.out.println("Images were written succesfully.");
 	}
+	private void generateScriptsAndStylesheets(String path)
+	{
+		ClassLoader classLoader = getClass().getClassLoader();
+        File images = new File(classLoader.getResource("images").getFile());
+        BufferedImage bImage = null;
+        new File(path+"/resources/static/images").mkdirs();
+		
+		for (File file : images.listFiles()) {
+			if(!file.isDirectory() && !file.getName().equals("background.jpg")) {
+			  try {
+				bImage = ImageIO.read(file);
+				if(file.getName().contains(".png")) {
+				ImageIO.write(bImage, "png", new File(path+"/resources/static/images/"+file.getName()));
+				}
+				else
+				{
+			    ImageIO.write(bImage, "gif", new File(path+"/resources/static/images/"+file.getName()));	
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	      }
+		new File(path+"/resources/static/scripts").mkdirs();
+		File scripts = new File(classLoader.getResource("static/scripts").getFile());
+		
+		for (File file : scripts.listFiles()) {
 
-}
+			try {
+			    
+			    Files.copy(file.toPath(),
+			            (new File(path+"/resources/static/scripts/"+file.getName()).toPath()),
+			            StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+	     
+			
+		
+	      }
+		
+		new File(path+"/resources/static/stylesheets").mkdirs();
+		File stylesheets = new File(classLoader.getResource("static/stylesheets").getFile());
+		
+		for (File file : stylesheets.listFiles()) {
+
+			try {
+			    
+			    Files.copy(file.toPath(),
+			            (new File(path+"/resources/static/stylesheets/"+file.getName()).toPath()),
+			            StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+	     
+			
+		
+	      }
+		
+		
+		
+		
+		
+		}
+	}
+
